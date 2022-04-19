@@ -6,12 +6,10 @@ const saltRounds = 10;
 
 const userSchema = new Schema({
 
-    email: {
-        type: String,
-        required: true,
-        unique: true
-    },
-    pass: {
+    // email: {
+    //     type: String, 
+    // },  
+    password: {
         type: String,
         required: true
     },
@@ -29,14 +27,14 @@ const userSchema = new Schema({
     image: {
         type: String
     }, 
-    token: {
+    refreshToken: {
         type: String
     }
 
 })
 
 // Middleware 'pre'; before save to user collection
-adminSchema.pre('save', function(next){
+userSchema.pre('save', function(next){
 
     const user = this;
   

@@ -14,6 +14,6 @@ router.patch('/profile', upload.single("image"),adminController.Profile)
 
 router.get('/verification', adminController.Verification)
 
-router.get('/changePassword', adminController.changePassword)
+router.post('/changePassword', adminController.changePassword) 
 
 module.exports = router 

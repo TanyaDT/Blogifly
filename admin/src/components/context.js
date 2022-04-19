@@ -12,7 +12,7 @@ export default function UserProvider({ children }) {
   useEffect(() => {
     localStorage.setItem("adminData", JSON.stringify(adminData));
   }, [adminData]);
-
+    console.log("Hello",adminData); 
   return (
     <AdminContext.Provider value={{ adminData, setAdminData }}>
       {children}

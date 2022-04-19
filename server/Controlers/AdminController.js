@@ -1,4 +1,4 @@
-const { send } = require("express/lib/response");
+
 const Admin = require("../models/Admin");
 // const { sendConfirmationEmail } = require('./ConfirmationControllers')
 const Verification = require("../models/AdminVerification");
@@ -96,65 +96,83 @@ exports.Verification = async (req, res) => {
   }
 };
 
+// exports.changePassword = async (req, res) => {
+//   console.log("Change Password");
+//   try {
+//     const { adminId } = req.params;
+//     const salt = await bcrypt.genSalt(10);
+//     const password = await bcrypt.hash(req.body.password, salt);
+//     const adminPassword = await Admin.findByIdAndUpdate(
+//       { _id: adminId },
+//       { password: password },
+//       { new: true }
+//     );
+
+//     return res.status(200).json({ status: true, data: adminPassword });
+//   } catch (error) {
+//     return res.status(400).json({ status: false, error: "Error Occured" });
+//   }
+// };
+
 exports.changePassword = async (req, res) => {
   console.log("Change Password");
   try {
-    const { adminId } = req.params;
-    const salt = await bcrypt.genSalt(10);
-    const password = await bcrypt.hash(req.body.password, salt);
-    const adminPassword = await Admin.findByIdAndUpdate(
-      { _id: adminId },
-      { password: password },
-      { new: true }
-    );
+    const { pass, token } = req.body;
+    console.log("body is", req.body);
+    // 1. verify the token  
+    const verifiedToken = await Admin.getPayload(token) 
+    console.log("verified token is", verifiedToken);
+    const user = await Admin.findByIdAndUpdate(verifiedToken.id);
+    if (user) {
+      user.pass = pass;
+      user.resetToken = "";
+      const userSaved = await user.save();
+      console.log("user is ", userSaved);
+    }
 
-    return res.status(200).json({ status: true, data: adminPassword });
+    res.send({ success: true });
   } catch (error) {
-    return res.status(400).json({ status: false, error: "Error Occured" });
+    console.log("change pass ERROR:", error.message);
+    res.send(error.message);
+  }
+}; 
+
+exports.logout = async (req, res) => {
+  try {
+    res.clearCookie("cookiename").send({ success: true });
+    console.log("logout: user logged out");
+  } catch (error) {
+    console.log("Logout ERROR:", error.message);
+    res.send(error.message);
   }
 };
-exports.logout = async(req, res) => {
 
-    try {
+exports.Profile = async (req, res) => {
+  try {
+    console.log("req.body is", req.body);
+    console.log("req.file is", req.file);
 
-        res.clearCookie('cookiename').send({success: true})
-        console.log('logout: user logged out')
-        
-    } catch (error) {
-        
-        console.log('Logout ERROR:', error.message)
-        res.send(error.message)
-    }
-}
+    const { email, username, _id } = req.body;
 
-exports.Profile =  async (req, res) => {
+    if (!(email || username)) return res.send({ success: false, errorId: 1 });
 
-    try {
-        
-        console.log('req.body is', req.body)
-        console.log('req.file is', req.file)
+    // const foundUser = await User.findById({_id})
+    //
+    // update users (field1, field2) set field1 = email and field2 = username
 
-        const {email, username, _id} = req.body
+    req.body.image = "/uploads/" + req.file.filename;
 
-        if (!(email || username)) return res.send({success: false, errorId: 1})
+    const user = await Admin.findByIdAndUpdate(_id, req.body, {
+      new: true,
+    }).select("-__v -pass");
 
-        // const foundUser = await User.findById({_id})
-        // 
-        // update users (field1, field2) set field1 = email and field2 = username
+    console.log("Profile: user is", user);
 
-        req.body.image = "/uploads/" + req.file.filename
+    if (!user) return res.send({ success: false, errorId: 2 });
 
-        const user = await Admin.findByIdAndUpdate(_id, req.body, {new: true}).select('-__v -pass')
-
-        console.log('Profile: user is', user)
-
-        if (!user) return res.send({success: false, errorId: 2})
-
-        res.send({success: true, user})
-    } catch (error) {
-        
-        console.log('Register ERROR:', error.message)
-        res.send(error.message)
-    }
-}
-
+    res.send({ success: true, user });
+  } catch (error) {
+    console.log("Register ERROR:", error.message);
+    res.send(error.message);
+  }
+};
