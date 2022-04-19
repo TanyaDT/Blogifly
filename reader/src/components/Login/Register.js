@@ -5,6 +5,9 @@ import {
   faInfoCircle,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import axios from 'axios';
+import './Register.css'; 
+import {Link} from 'react-router-dom';
 
 
 const USER_REGEX = /^[A-z][A-z0-9-_]{3,23}$/;
@@ -34,20 +37,15 @@ const Register = () => {
     userRef.current.focus();
   }, []);
 
-  useEffect(() => {
-    const result = USER_REGEX.test(user);
-    console.log(result);
-    console.log(user);
-    setValidName(result);
-  }, [user]);
 
   useEffect(() => {
-    const result = PWD_REGEX.test(pwd);
-    console.log(result);
-    console.log(pwd);
-    setValidPwd(result);
-    const match = pwd === matchPwd;
-  }, [pwd, matchPwd]);
+    setValidName(USER_REGEX.test(user));
+}, [user])
+
+useEffect(() => {
+    setValidPwd(PWD_REGEX.test(pwd));
+    setValidMatch(pwd === matchPwd);
+}, [pwd, matchPwd]) 
 
   useEffect(() => {
     setErrMsg("");
@@ -98,7 +96,7 @@ const Register = () => {
         <section>
           <h1>Success!</h1>
           <p>
-            <a href="#">Sign In</a>
+            <Link to="/login">Sign In</Link> 
           </p>
         </section>
       ) : (
@@ -232,8 +230,7 @@ const Register = () => {
             Already registered?
             <br />
             <span className="line">
-              {/*put router link here*/}
-              <a href="#">Sign In</a>
+              <Link to="/login">Sign In</Link>
             </span>
           </p>
         </section>

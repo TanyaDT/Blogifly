@@ -80,8 +80,15 @@ adminSchema.methods.generateToken = async function() {
     await admin.save()
     return admin
 }
+adminSchema.statics.getPayload = async token => {
 
-
+    try {
+        return jwt.verify(token, process.env.SECRET)
+        
+    } catch (error) {
+        return error.message 
+    }
+}
 
 const Admin= mongoose.model('Admin', adminSchema)
 module.exports = Admin

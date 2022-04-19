@@ -21,14 +21,15 @@ import axios from "axios";
 
 
 function Home() {
-  const { adminData, setAdminData } = useContext(AdminContext);
+  const { setAdminData } = useContext(AdminContext);
+  console.log('Hello Kareem', setAdminData); 
   const navigate = useNavigate();
   const handleLogout = async () => {
     const response = await axios.get("/admin/logout");
 
     if (response.data.success) {
       // clear the context
-      setAdminData(null);
+      setAdminData(null); 
     }
     // redirect user to home
     navigate("/");
