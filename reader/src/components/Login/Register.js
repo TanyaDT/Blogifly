@@ -4,15 +4,9 @@ import {
   faTimes,
   faInfoCircle,
 } from "@fortawesome/free-solid-svg-icons";
-<<<<<<< HEAD
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import axios from 'axios';
-import './Register.css'; 
-=======
 import { FontAwesomeIcon } from "@fontawesome/react-fontawesome";
 import axios from 'axios';
->>>>>>> e4db787bb5d21af0712f12704aa3f5a90c910e0a
-import {Link} from 'react-router-dom';
+import {Link} from 'react-router-dom'; 
 
 
 const USER_REGEX = /^[A-z][A-z0-9-_]{3,23}$/;
@@ -235,15 +229,11 @@ useEffect(() => {
             Already registered?
             <br />
             <span className="line">
-<<<<<<< HEAD
-              <Link to="/login">Sign In</Link>
-=======
               {/*put router link here*/}
               <Link to="login">Sign In</Link> 
->>>>>>> e4db787bb5d21af0712f12704aa3f5a90c910e0a
             </span>
           </p>
-        </section>
+        </section>  
       )}
     </>
   );
