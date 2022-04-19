@@ -35,9 +35,10 @@ try {
 }
 
 exports.listPosts= async(request,res) => {
-    const owner = request.query.owner
+    //const owner = request.query.owner
     try {
-        const posts = await Post.find({owner}).populate("owner").sort({updatedAt: "desc"}).exec()
+        //const posts = await Post.find({owner}).populate("owner").sort({updatedAt: "desc"}).exec()
+        const posts = await Post.find().populate("owner").sort({updatedAt: "desc"}).limit(5)
         return res.json(posts)
     } catch (error) {
         return res.status(500).send(error)  

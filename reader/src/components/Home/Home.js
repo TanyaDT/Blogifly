@@ -3,7 +3,7 @@ import banner from '../../assets/banner.png';
 import BlogpostCard from './BlogpostCard/BlogpostCard';
 import CategorySidebar from './CategorySidebar/CategorySidebar';
 
-function Home() {
+function Home() {  
   return (
     <main>
 

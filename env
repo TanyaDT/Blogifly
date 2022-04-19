@@ -1,9 +1,0 @@
-PORT=8000
-DB_URI=mongodb+srv://blogifly:1234@cluster0.hg2ew.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
-
-
-JWT_SECRET=6N@pRwJff(mG28dT
-TOKEN_EXP=1d
-
-EMAIL=blogyfly@gmail.com
-PASSWORD=admin1234reader
